@@ -1,0 +1,116 @@
+<!doctype html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>博客管理</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+  </head>
+
+  <body>
+    <div th:replace="~{admin/comm/header::header}"></div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div th:replace="~{admin/comm/footer::footer}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="ui container">
+                <form th:action="@{/admin/blog/search}" method="post" class="ui segment form">
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class="ui left labeled input">
+                                <select class="ui fluid search dropdown" name="lid">
+                                    <option value="">分类</option>
+                                    <option th:each="classify:${classify}" th:value="${classify.lid}">[[${classify.labelName}]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="recommend">
+                                <label>推荐</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
+                        </div>
+                    </div>
+                </form>
+                <table class="ui celled table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>标题</th>
+                      <th>类型</th>
+                      <th>是否推荐</th>
+                      <th>发布状态</th>
+                      <th>访问量</th>
+                      <th>发布时间</th>
+                      <th>更新时间</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="blog:${blog}">
+                      <td th:text="${blog.bid}"></td>
+                      <td th:text="${blog.title}"></td>
+                      <td th:text="${blog.classify.labelName}"></td>
+                      <td th:text="${blog.recommend==true?'推荐':'一般推荐'}"></td>
+                      <td th:text="${blog.issue}"></td>
+                      <td th:text="${blog.visited}"></td>
+                      <td th:text="${#dates.format(blog.createDate,'yyyy-MM-dd')}"></td>
+                      <td th:text="${#dates.format(blog.updateDate,'yyyy-MM-dd')}"></td>
+                      <td>
+                        <a th:href="@{'/blog/detail/'+${blog.bid}+'?preview=预览'}" class="ui mini blue button">预览</a>
+                        <a th:href="@{'/admin/blog/up/'+${blog.bid}}" class="ui mini teal button">编辑</a>
+                        <a href="javascript:void(0)" th:onclick="'del('+${blog.bid}+')'" class="ui mini red button">删除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <div th:replace="~{admin/comm/page::pagego}"></div>
+                  </tfoot>
+                </table>
+            </div>
+        </main>
+      </div>
+    </div>
+
+
+    <!-- Icons -->
+    <script th:src="@{https://unpkg.com/feather-icons/dist/feather.min.js}"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script>
+        function del(bid) {
+            $.ajax({
+                url:"/admin/blog/del",
+                data:{bid:bid},
+                type:"POST",
+                success:function (data) {
+                    if(data=='ok'){
+                        alert("删除成功！")
+                        window.location.href="/admin/blog/all"
+                    }else{
+                        alert(data)
+                    }
+                }
+            })
+        }
+    </script>
+
+  </body>
+</html>

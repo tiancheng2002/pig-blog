@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>小朱博客后台管理</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/static/blog/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/static/blog/layui/css/font-awesome.min.css}" media="all">
+    <link rel="stylesheet" th:href="@{/static/blog/layui/css/public.css}" media="all">
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/blog/css/semantic.min.css}">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+  </head>
+
+  <body>
+
+    <div th:replace="~{admin/comm/header::header}"></div>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <div th:replace="~{admin/comm/footer::footer}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <div style="display: flex;justify-content: space-evenly;">
+            <div style="background-color: #ff8e0c" id="blog_data">
+              <div>
+                <i id="data_img" class="paw huge icon"></i>
+              </div>
+              <div class="data-item">
+                <div>发表了</div>
+                <div th:text="${blogCount}"></div>
+                <div>篇博客</div>
+              </div>
+            </div>
+            <div style="background-color: #0badff" id="comment_data">
+              <div>
+                <i id="data_img" class="quote huge left icon"></i>
+              </div>
+              <div class="data-item">
+                <div>收到了</div>
+                <div th:text="${commentCount}"></div>
+                <div>个评论</div>
+              </div>
+            </div>
+            <div style="background-color: #3ec354" id="daily_data">
+              <div>
+                <i id="data_img" class="share huge alternate icon"></i>
+              </div>
+              <div class="data-item">
+                <div>发布了</div>
+                <div th:text="${dailyCount}"></div>
+                <div>次日常</div>
+              </div>
+            </div>
+            <div style="background-color: #9840cb" id="visited_data">
+              <div>
+                <i id="data_img" class="heart huge icon"></i>
+              </div>
+              <div class="data-item">
+                <div>增加了</div>
+                <div th:text="${WPeople}"></div>
+                <div>访客量</div>
+              </div>
+            </div>
+          </div>
+
+            <!--每天访问人数的记录-->
+            <input type="hidden" th:value="${Monday}" id="Monday" name="Monday">
+            <input type="hidden" th:value="${Tuesday}" id="Tuesday" name="Tuesday">
+            <input type="hidden" th:value="${Wednesday}" id="Wednesday" name="Wednesday">
+            <input type="hidden" th:value="${Thursday}" id="Thursday" name="Thursday">
+            <input type="hidden" th:value="${Friday}" id="Friday" name="Friday">
+            <input type="hidden" th:value="${Saturday}" id="Saturday" name="Saturday">
+            <input type="hidden" th:value="${Sunday}" id="Sunday" name="Sunday">
+
+          <canvas id="myChart" width="400" height="100"></canvas>
+
+        </main>
+      </div>
+    </div>
+
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/Chart.js/3.5.1/chart.min.js}"></script>
+
+
+    <!-- Icons -->
+    <script th:src="@{https://unpkg.com/feather-icons/dist/feather.min.js}"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script>
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六','星期日'],
+              datasets: [{
+                  label: '# 访客量',
+                  data: [$('#Monday').val(), $('#Tuesday').val(), $('#Wednesday').val(), $('#Thursday').val(), $('#Friday').val(), $('#Saturday').val(), $('#Sunday').val()],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)',
+                      'rgba(191,90,255,0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)',
+                      'rgba(235,151,255,1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+
+      </script>
+  </body>
+</html>
+<style>
+  #blog_data,#comment_data,#daily_data,#visited_data{
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 120px;
+    border-radius: 5px;
+  }
+  .data-item{
+    color: white;
+    margin-right: 15px;
+    width: 100%;
+    text-align: right;
+  }
+  .data-item div:nth-child(2){
+    font-size: 28px;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  #data_img{
+    color: white;
+    margin-left: 15px;
+  }
+</style>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhu.dao.CommentMapper">
+
+    <select id="getComment" resultType="comment">
+        select * from t_comment
+        <where>
+            <choose>
+                <when test="bid==null">
+                    bid is null
+                </when>
+                <otherwise>
+                    <if test="bid!=0">
+                        bid = #{bid}
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        <choose>
+            <when test="reserve=='desc'">
+                order by commentDate desc
+            </when>
+            <otherwise>
+                order by commentDate asc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getCommentByID" resultType="comment">
+        select * from t_comment where cid = #{cid}
+    </select>
+
+    <select id="getCommentBy" resultType="comment">
+        select * from t_comment
+        <where>
+            <if test="name!=null">
+                name like "%"#{name}"%"
+            </if>
+            <if test="email!=null">
+                and email like "%"#{email}"%"
+            </if>
+            <if test="website!=null">
+                and website like "%"#{website}"%"
+            </if>
+            <if test="message!=null">
+                and message like "%"#{message}"%"
+            </if>
+        </where>
+    </select>
+
+    <sql id="columns">
+        (name,email,website,message,commentDate,headPicture,pid,replyName,bid,role)
+    </sql>
+
+    <select id="getCommentCount" resultType="int">
+        select count(*) from t_comment
+        <where>
+            <choose>
+                <when test="bid!=null">
+                    bid = #{bid}
+                </when>
+                <otherwise>
+                    bid is null
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="addComment" parameterType="comment">
+        insert into t_comment
+        <include refid="columns"></include>
+        values (#{name},#{email},#{website},#{message},#{commentDate},#{headPicture},#{pid},#{replyName},#{bid},#{role})
+    </insert>
+
+    <delete id="delComment" parameterType="int">
+        delete from t_comment where cid = #{cid}
+    </delete>
+
+</mapper>

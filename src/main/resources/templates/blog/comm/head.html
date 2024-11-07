@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="siderbar" th:fragment="siderbar">
+    <div class="siderbar">
+        <div>
+            <p><a id="close" href="javascript:void(0)"><i class="x big icon"></i></a></p>
+            <p th:class="${active=='index'?'siderbar-item active':'siderbar-item'}"><a th:href="@{/}">Index</a></p>
+            <p th:class="${active=='classify'?'siderbar-item active':'siderbar-item'}"><a th:href="@{/classify}">Classify</a>
+            </p>
+            <p th:class="${active=='about'?'siderbar-item active':'siderbar-item'}"><a th:href="@{/about}">About</a></p>
+            <p th:class="${active=='comment'?'siderbar-item active':'siderbar-item'}"><a
+                    th:href="@{/comment}">Comment</a></p>
+            <p th:class="${active=='daily'?'siderbar-item active':'siderbar-item'}"><a th:href="@{/daily}">Daily</a></p>
+        </div>
+    </div>
+</div>
+<div id="header" th:fragment="header" class="animate__animated animate__fadeInDown">
+    <img id="blog_header_img" src="https://pic.imgdb.cn/item/61c306a02ab3f51d9127cc65.png"
+         style="width: 25px;height: 25px">
+    <span id="header_navigation">
+            <a th:href="@{/}"><i class="home icon"></i>首页</a>
+            <a th:href="@{/classify}"><i class="tags icon"></i>分类</a>
+            <a th:href="@{/about}"><i style="font-size: 18px;" class="smile home icon"></i>关于我</a>
+            <a th:href="@{/comment}"><i class="edit icon"></i>留言板</a>
+            <a th:href="@{/daily}"><i class="calendar alternate icon"></i>日常</a>
+        </span>
+    <div style="right: 0;top:0;position: fixed;display: flex;align-items: center;height: 100%;">
+        <a id="myList" href="javascript:void(0)"><i class="align justify icon"></i></a>
+    </div>
+</div>
+
+</body>
+</html>
+
+

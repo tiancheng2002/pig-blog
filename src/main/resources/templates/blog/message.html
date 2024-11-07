@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link th:href="@{/blog/css/main.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.js}" type="text/javascript"></script>
+    <script th:src="@{/blog/js/main.js}"></script>
+</head>
+<body>
+
+    <div th:replace="~{blog/comm/head::siderbar}"></div>
+    <div id="container">
+        <header>
+            <div th:replace="~{blog/comm/head::header}"></div>
+            <div id="header_title">
+                留言板
+            </div>
+        </header>
+        <main id="main">
+            <div id="main_context" style="background-color: white !important;" class="animate__animated animate__fadeInUp">
+                <div class="message_head">
+                    <h3>这里是留言板，你可以留下自己想说的话，或者博客上有什么问题都可以进行反馈，收到评论之后，我会将回复发送至你的邮箱，感谢您的建议！</h3>
+                    <h6>注：不要发脏话和广告，谢谢！</h6>
+                </div>
+                <hr style="opacity: 1;border: 2px dashed #a4d8fa">
+
+                <div style="font-size: 22px;color: #4c4948;margin: 30px 0 20px 0">
+                    <i class="comments icon"></i><span style="font-weight: bold">评论</span>
+                </div>
+                <a name="message_input"></a>
+                <form th:action="@{/comment/message}" method="post">
+                    <div id="comments_area">
+                        <div id="comments_info">
+                            <input type="hidden" name="pid" id="pid">
+                            <input type="hidden" name="replyName" id="replyName">
+                            <input type="text" placeholder="昵称" name="name" class="text" required>
+                            <input type="text" placeholder="邮箱" name="email" class="text">
+<!--                            <input type="text" placeholder="网站(http://)" name="website" class="text">-->
+                        </div>
+                        <label for="message" class="required"></label>
+                        <textarea rows="8" cols="50" placeholder="可以随意发表你的言论" id="message_abc" name="message" class="textarea" required></textarea>
+                    </div>
+                    <p class="message_btn"><input type="submit" value="评论" class="submit"></p>
+                </form>
+                <p>全部评论([[${commentCount}]])</p>
+                <div id="comments">
+                    <div th:each="comment:${comment}" th:if="${comment.pid==null}">
+                        <div id="comments_item">
+                            <img id="comments_img" th:src="${comment.headPicture}">
+                            <div class="comment_information">
+                                <div>
+                                    <span class="comment_name" th:text="${comment.name}"></span><span th:if="${comment.role=='host'}" class="comment_host">博主</span>
+                                </div>
+                                <div style="margin-top: -10px">
+                                    <span class="comment_date" th:text="${#dates.format(comment.commentDate,'yyyy-MM-dd HH:mm:ss')}"></span><span style="float: right;"><a href="#message_input" th:data-cid="${comment.cid}" th:data-commentname="${comment.name}" th:onclick="reply(this.getAttribute('data-commentname'),this.getAttribute('data-cid'))"><i class="comment outline icon"></i></a></span>
+                                </div>
+                                <div style="margin-top: 1rem">
+                                    <p class="comment_message" th:text="${comment.message}"></p>
+                                </div>
+                                <div th:each="replycomment:${replycomment}" th:if="${replycomment.pid==comment.cid}">
+                                    <hr style="border-style: solid">
+                                    <div style="border: none!important;padding: 0!important;" id="comments_item">
+                                        <img id="comments_img" th:src="${replycomment.headPicture}">
+                                        <div class="comment_information">
+                                            <div id="comments_item-person">
+                                                <span th:text="${replycomment.name}"></span><span th:if="${replycomment.role=='host'}" class="comment_host">博主</span><span class="reply_text">回复</span><span class="reply_name" th:text="${'@'+replycomment.replyName}"></span>
+                                            </div>
+                                            <div style="margin-top: -10px">
+                                                <span class="comment_date" th:text="${#dates.format(replycomment.commentDate,'yyyy-MM-dd HH:mm:ss')}"></span>
+                                                <span style="float: right;"><a href="#message_input" th:data-replyName="${replycomment.name}" th:data-pid="${replycomment.pid}" th:onclick="reply(this.getAttribute('data-replyName'),this.getAttribute('data-pid'))"><i class="comment outline icon"></i></a></span>
+                                            </div>
+                                            <div style="margin-top: 1rem">
+                                                <p class="comment_message" th:text="${replycomment.message}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer id="foot">
+            <div th:replace="~{blog/comm/foot::footer}"></div>
+        </footer>
+    </div>
+
+    <script>
+            function reply(replyName,pid) {
+                $("#message_abc").attr("placeholder","@"+replyName);
+                $("#pid").attr("value",pid);
+                $("#replyName").attr("value",replyName);
+                $("#message_abc").focus();
+            }
+            $(function(){
+                $('.textarea').focus(function () {
+                    $(".textarea").css("background-image",'none')
+                })
+                $('.textarea').blur(function () {
+                    $(".textarea").css("background-image","url('https://cdn.jsdelivr.net/gh/Goopher97/tuchuang2@master/img/baba.gif')")
+                })
+            })
+
+    </script>
+</body>
+</html>
+<style>
+    hr{
+        border-style: dashed;
+        opacity: 1 !important;
+    }
+    .message_head h3{
+        font-size: 1.1rem;
+        color: #4c4948;
+        text-indent: 2em;
+        margin-top: 3rem
+    }
+    .message_head h6{
+        color: gray;
+        text-align: right;
+    }
+    #container{
+        background-image: url('https://pic.imgdb.cn/item/61c099882ab3f51d912e36af.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed
+    }
+    #main_context{
+        box-shadow: none;
+    }
+    #foot{
+        background: none;
+    }
+</style>

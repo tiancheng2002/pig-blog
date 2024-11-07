@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhu.dao.ClassifyMapper">
+
+    <select id="getClassifyAll" resultType="classify">
+        select * from t_classify
+    </select>
+
+    <select id="getClassifyByID" resultType="classify">
+        select * from t_classify where lid = #{lid}
+    </select>
+
+    <select id="getClassifyByName" resultType="classify">
+        select * from t_classify where labelName like "%"#{name}"%"
+    </select>
+
+    <select id="getClassifyByOnlyName" resultType="classify">
+        select * from t_classify where labelName = #{name}
+    </select>
+
+    <select id="getClassifyCount" resultType="int">
+        select count(*) from t_classify
+    </select>
+
+    <insert id="addClassify" parameterType="java.lang.String">
+        insert into t_classify(labelName) values (#{name})
+    </insert>
+
+    <update id="updateClassify" parameterType="classify">
+        update t_classify set labelName = #{labelName} where lid = #{lid}
+    </update>
+
+    <delete id="deleteClassify" parameterType="int">
+        delete from t_classify where lid = #{id}
+    </delete>
+
+</mapper>

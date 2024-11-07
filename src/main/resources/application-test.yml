@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&&characterEncoding=UTF-8&&useSSL=false&&serverTimezone=UTC&&useSSL=false
+    username: root
+    password: 12345678
+  #    password: Zz200287
+  thymeleaf:
+    cache: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 9
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 5000
+  #    password: Zz200287
+  application:
+    name: pig-blog
+  main:
+    allow-circular-references: true
+
+thymeleaf:
+  prefix: classpath:templates/
+
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.zhu.pojo
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count-countSql
+
+server:
+  port: 8081

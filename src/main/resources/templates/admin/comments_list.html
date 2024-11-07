@@ -1,0 +1,139 @@
+<!doctype html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>评论管理</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+  </head>
+
+  <body>
+    <div th:replace="~{admin/comm/header::header}"></div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div th:replace="~{admin/comm/footer::footer}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="ui container">
+                <form th:action="@{/admin/comment/search}" method="post" class="ui segment form">
+                    <div class="inline fields">
+                        <div class="field">
+                            <input type="text" name="name" placeholder="昵称">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="email" placeholder="邮箱">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="website" placeholder="网站">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="message" placeholder="评论内容">
+                        </div>
+                        <div class="field">
+                            <button class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
+                        </div>
+                    </div>
+                </form>
+                <div style="height: 450px" class="ui small modal">
+                    <div class="header">回复评论</div>
+                    <form th:action="@{/admin/comment/message}" method="post" class="ui segment form">
+                        <div style="margin-bottom: 1rem!important;" class="inline three fields">
+                            <div class="field">回复ID：<input class="admin_reply_text" id="cid" name="cid" type="text" readonly></div>
+                            <div class="field">回复人：<input class="admin_reply_text" id="name" type="text" readonly></div>
+                            <div class="field">博客ID：<input class="admin_reply_text" id="bid" type="text" readonly></div>
+                        </div>
+                        <div class="field">评论内容：<input class="admin_reply_text" id="message" type="text" readonly></div>
+                        <div class="field">回复：<textarea name="replyMessage" style="margin-top: 1rem!important;" rows="5" cols="12" required></textarea></div>
+                        <div style="text-align: right" class="actions">
+                            <div class="ui red button">cancel</div>
+                            <input class="ui green button" type="submit" value="send"></input>
+                        </div>
+                    </form>
+                </div>
+                <table class="ui celled table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>昵称</th>
+                      <th>邮箱</th>
+                      <th>网站</th>
+                      <th>评论内容</th>
+                      <th>评论时间</th>
+                      <th>评论者</th>
+                      <th>博客ID</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="comment:${comment}">
+                      <td th:text="${comment.cid}"></td>
+                      <td th:title="${comment.name}" th:text="${#strings.length(comment.name)>8?#strings.substring(comment.name,0,8)+'...':comment.name}">/td>
+                      <td th:text="${comment.email}"></td>
+                      <td th:text="${comment.website}"></td>
+                      <td th:title="${comment.message}" th:text="${#strings.length(comment.message)>8?#strings.substring(comment.message,0,8)+'...':comment.message}"></td>
+                      <td th:text="${#dates.format(comment.commentDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                      <td th:text="${comment.role=='host'?'博主':'访客'}"></td>
+                      <td th:text="${comment.bid}"></td>
+                      <td>
+                        <a th:data-id="${comment.cid}" th:data-name="${comment.name}" th:data-message="${comment.message}" th:data-bid="${comment.bid}" onclick="replyComment_form(this.getAttribute('data-id'),this.getAttribute('data-name'),this.getAttribute('data-message'),this.getAttribute('data-bid'))" class="ui mini teal button">回复</a>
+                        <a href="javascript:void(0)" th:onclick="'del('+${comment.cid}+')'" class="ui mini red button">删除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <div th:replace="~{admin/comm/page::pagego}"></div>
+                  </tfoot>
+                </table>
+            </div>
+        </main>
+      </div>
+    </div>
+
+
+    <!-- Icons -->
+    <script th:src="@{https://unpkg.com/feather-icons/dist/feather.min.js}"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script>
+        function del(cid) {
+            $.ajax({
+                url:"/admin/comment/del",
+                data:{cid:cid},
+                type:"POST",
+                success:function (data) {
+                    if(data=="ok"){
+                        alert("删除成功！")
+                        window.location.href="/admin/comment/all"
+                    }else{
+                        alert(data)
+                    }
+                }
+            })
+        }
+        function replyComment_form(id,name,message,bid) {
+            $('#cid').attr('value',id)
+            $('#name').attr('value',name)
+            $('#message').attr('value',message)
+            $('#bid').attr('value',bid)
+            $('.ui.modal')
+                .modal('show')
+            ;
+        }
+    </script>
+
+  </body>
+</html>

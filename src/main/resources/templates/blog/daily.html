@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日常</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link th:href="@{/blog/css/main.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/blog/js/jquery-1.8.3.min.js}" type="text/javascript"></script>
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.js}" type="text/javascript"></script>
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+</head>
+<body>
+
+    <div class="img_show">
+        <p>
+            <a id="close_img" href="javascript:void(0)">
+                <i class="x big icon"></i>
+            </a>
+        </p>
+        <div>
+            <img class="animate__animated animate__bounceIn img_show_src" src="">
+        </div>
+    </div>
+    <div th:replace="~{blog/comm/head::siderbar}"></div>
+    <div id="daily">
+        <header>
+            <div th:replace="~{blog/comm/head::header}"></div>
+            <div id="header_title">
+                日常
+            </div>
+        </header>
+        <main id="main">
+            <div id="main_context" class="animate__animated animate__fadeInUp">
+                <div id="daily_item" th:each="daily:${daily}">
+                    <div id="daily_mine">
+                        <img src="https://pic.imgdb.cn/item/617bee902ab3f51d913ad0e3.jpg">
+                        <span>XiaoZhu</span><img style="margin-left: -10px;width: 30px;height: 30px" src="https://pic.imgdb.cn/item/61af4f962ab3f51d91a02e4f.png"><span th:text="${(new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000==0?'今天':((new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000)>365?(new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000/365+'年前':((new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000)>31?(new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000/31+'个月前':(new java.util.Date().getTime()-daily.uploadDate.getTime())/24/60/60/1000+'天前'}">
+                        </span>
+                    </div>
+                    <div>
+                        <p style="margin: 0">[[${daily.text}]]</p>
+                        <img th:data-dayImg="${daily.dayImg}" th:onclick="showImg(this.getAttribute('data-dayImg'))" th:src="${daily.dayImg}">
+                    </div>
+                </div>
+                <div id="pageNum" th:if="${pageInfo.pages!=0}">
+                    <a th:if="${pageInfo.pageNum!=1}" th:href="@{'/'+${navbar}+'?pageNum='+${pageInfo.prePage}}"><i class="angle double left icon"></i></a>
+                    <a th:class="${pageInfo.pageNum==i?'pageNum-item-hover':'pageNum-item'}" th:href="@{'/'+${navbar}+'?pageNum='+${i}}" th:each="i:${#numbers.sequence(1,pageInfo.pages)}">[[${i}]]</a>
+                    <a th:if="${pageInfo.isLastPage!=true}" th:href="@{'/'+${navbar}+'?pageNum='+${pageInfo.nextPage}}"><i class="angle double right icon"></i></a>
+                </div>
+
+            </div>
+        </main>
+        <footer id="foot">
+            <div th:replace="~{blog/comm/foot::footer}"></div>
+        </footer>
+    </div>
+
+
+    <script>
+        function showImg(src) {
+            $('.img_show_src').attr('src',src);
+            $('.img_show').css("display","block");
+        }
+        $('#close_img').click(function () {
+            $('.img_show').css("display","none");
+        })
+    </script>
+</body>
+</html>
+<style>
+    #daily{
+        background-image: url('https://pic.imgdb.cn/item/61c099882ab3f51d912e36b8.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed
+    }
+    #main_context{
+        box-shadow: none;
+    }
+    #foot{
+        background: none;
+    }
+</style>

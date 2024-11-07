@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link th:href="@{/blog/css/main.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/blog/js/main.js}"></script>
+    <title>分类</title>
+</head>
+
+<body>
+
+    <div th:replace="~{blog/comm/head::siderbar}"></div>
+    <div id="classify">
+        <header>
+            <div th:replace="~{blog/comm/head::header}"></div>
+            <div id="header_title">
+                分类
+            </div>
+        </header>
+        <main id="main">
+            <div id="main_context" class="animate__animated animate__fadeInUp">
+                <p id="classify_title">分类&nbsp;-&nbsp;[[${pageInfo.pageSize}]]</p>
+                <div>
+                    <ul id="classify-list" th:each="i:${#numbers.sequence(0,(pageInfo.pageSize)-1)}">
+                        <a th:href="@{'/classify/'+${classify[i].labelName}}"><li id="classify-list-item" ::before>[[${classify[i].labelName}]]<span>（&nbsp;[[${countByClassify[i].classifyCount}]]&nbsp;）</span></li></a>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer id="foot">
+            <div th:replace="~{blog/comm/foot::footer}"></div>
+        </footer>
+    </div>
+
+
+</body>
+
+</html>
+<style>
+    #classify{
+        background-image: url('https://pic.imgdb.cn/item/61c099882ab3f51d912e36b8.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed
+    }
+    #main_context{
+        box-shadow: none;
+    }
+    #foot{
+        background: none;
+    }
+</style>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/blog/css/main.css}">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+    <script th:src="@{/blog/js/main.js}"></script>
+</head>
+<body>
+
+<div th:replace="~{blog/comm/head::siderbar}"></div>
+<div id="about">
+    <header>
+        <div th:replace="~{blog/comm/head::header}"></div>
+        <div id="header_title">
+            关于我
+        </div>
+    </header>
+    <main id="main">
+        <div id="main_context" class="animate__animated animate__fadeInUp">
+            <div id="main_mine">
+                <img id="mine_touxiang" src="https://pic.imgdb.cn/item/617bee902ab3f51d913ad0e3.jpg">
+                <p>Xiao Zhu</p>
+            </div>
+            <div id="mine_resume">
+                <span>个人简历：</span>
+                <ul id="mine-list">
+                    <li id="mine-list-item">坐标浙江宁波🌏，一个平平无奇的02年大二在校生</li>
+                    <li id="mine-list-item">爱好编程💻、打篮球🏀、摄影📷、健身💪</li>
+                    <li id="mine-list-item">计算机专业，主攻java，学习不太好，喜欢做自己喜欢的事情</li>
+                </ul>
+            </div>
+            <div id="mine_resume">
+                <span>技术使用：</span>
+                <ul id="mine-list">
+                    <li id="mine-list-item">本网站后端使用SpringBoot、Mybatis、Druid、Thymeleaf以及SpringSecurity安全框架</li>
+                    <li id="mine-list-item">以及Markdown编辑器、tocbot目录生成器、prism代码高亮等插件</li>
+                    <li id="mine-list-item">前端组件使用了bootstrap和semantic Ui</li>
+                    <li id="mine-list-item">做的不太好，就是想记录自己的学习生活以及分享笔记，希望能和大家多多交流！</li>
+                </ul>
+            </div>
+            <div id="mine_resume">
+                <span>关于博客：</span>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px;margin-top: 20px">
+                    呃……关于这个博客是怎么来的，其实说来话长，在暑假的时候我刚刚接触javaweb，因为下学期开学我们就要学习javaweb，
+                    所以我就想在暑假里面先进行学习一下，一个是怕学起来太难，提早学可以奠定一下基础（因为我是个java菜鸡🙄），
+                    还有个是对做网页也挺感兴趣的。
+                </p>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px">
+                    经过了两个多月的学习，在国庆节后面一个星期我才有了想做一个自己的网站这个想法，那个时候看的最多的就是别人的博客，
+                    所以也想自己做一个博客，我就开始一步一步从最开始的设计数据库、设计页面、主要框架，功能，再到后面的页面实现（也借鉴过别人的博客），
+                    因为课程比较多，基本上是晚上有时间（中午忙着睡午觉了🙃），所以每天晚上都会花点时间来做，一点一点完善。
+                </p>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px">
+                    其实现在像hexo和gridea这些快速简单，功能强大，主题美观的博客框架有很多，很多人都在用，其实如果我不是学java的话
+                    我也可能会用那些简单高效的博客框架搭建，因为谁愿意花多的时间去搭建一个功能以及整体效果不好的网站呢（其实是因为做了一半才发现有现成的框架😶）。
+                </p>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px">
+                    做这个网站一方面是经过这段时间学习javaweb也好，学习SpringBoot也好，想用自己学的技术来搭建一个网站;还有一方面是想分享自己的学习笔记以及记录生活，
+                    虽然网站的整体效果不好， 功能也不是特别完善，还请大家多多包含！该博客还有一个后台管理面板，可以实时发布以及更新文章和日常，并且也能看到你们的每一条留言。
+                    做这个博客的意义很简单，就是想自己动手完成一个项目，至少对自己来说是一种提升吧，也非常感谢您的浏览，小朱在这里向你表示感谢！！！
+                </p>
+            </div>
+            <div id="mine_resume">
+                <span>Logo由来：</span>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px;margin-top: 20px">
+                    这个logo最显眼的应该就是这个Z字母了，其实仔细看还能看出来有个X，哈哈哈，虽然不太明显...因为博客的名字叫小朱，
+                    所以一个开始做logo的时候就是想把X和Z这两个字母进行结合。
+                </p>
+                <p style="line-height: 30px;text-indent: 2em;letter-spacing: 3px">
+                    一开始想做一个字母分割，将两个字母进行重叠，然后减去两个字母的重叠部分，中间加上一条直线，添加深度和阴影，
+                    就会有一种切割的感觉，但是做完发现效果不太好，所以又设计了一个简约一点的，发现效果还可以，于是就用这个。
+                </p>
+            </div>
+            <div id="mine_resume">
+                <span>联系方式：</span>
+                <ul id="mine-list">
+                    <li id="mine-list-item">邮箱：1849530179@qq.com</li>
+                    <li id="mine-list-item">如果遇到了问题或者有哪些地方需要纠正，可以通过邮箱跟我反馈，我会及时做出调整，谢谢大家！</li>
+                </ul>
+            </div>
+            <div id="square_main">
+                <div class="square">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="content">
+                        <h2>留言板</h2>
+                        <p>
+                            &nbsp;&nbsp;&nbsp;&nbsp;看了这么久，你一定也有什么想说的吧，快来留言板留下你的想法吧！！！
+                        </p>
+                        <a th:href="@{/comment}">Go To Message</a>
+                    </div>
+                </div>
+                <div class="square">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="content">
+                        <h2>日常</h2>
+                        <p>
+                            &nbsp;&nbsp;&nbsp;&nbsp;除了文章之外我还会经常分享自己的日常给大家，快来了解一下吧！！！
+                        </p>
+                        <a th:href="@{/daily}">Go To MyLife</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p style="font-weight: bold;margin-bottom: 3rem;">注：本博客部分图片来源于网络，如有侵权，请告知删除！</p>
+            </div>
+        </div>
+    </main>
+    <footer id="foot">
+        <div th:replace="~{blog/comm/foot::footer}"></div>
+    </footer>
+</div>
+
+</body>
+</html>
+<style>
+    #about {
+        background-image: url('https://pic.imgdb.cn/item/61c699a12ab3f51d917eef62.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed
+    }
+
+    #main_context {
+        margin-top: 120px;
+        background-color: white;
+        box-shadow: none;
+    }
+
+    #mine_touxiang {
+        transition: none;
+        margin-top: -120px;
+        width: 150px;
+        height: 150px;
+    }
+
+    #foot {
+        background: none;
+    }
+</style>

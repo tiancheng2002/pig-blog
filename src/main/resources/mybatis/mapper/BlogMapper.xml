@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhu.dao.BlogMapper">
+
+<!--    <select id="getBlog" resultMap="blogClassify">-->
+<!--        select a.*,b.lid as lid,b.labelName as labelName from t_blog a,t_classify b where a.lid = b.lid-->
+<!--    </select>-->
+
+    <select id="getBlog" resultMap="blogClassify">
+        select * from t_blog
+        <where>
+            <if test="lid!=null">
+                lid = #{lid}
+            </if>
+            <if test="issue!=null">
+                and issue = '发布'
+            </if>
+        </where>
+        order by createDate desc
+    </select>
+
+    <select id="Classify" resultType="classify">
+        select * from t_classify where lid = #{lid}
+    </select>
+
+    <resultMap id="blogClassify" type="blog">
+        <association property="classify" javaType="classify" column="lid" select="Classify" />
+    </resultMap>
+
+<!--    <resultMap id="blogClassify" type="blog">-->
+<!--        <id property="bid" column="bid" />-->
+<!--        <association property="classify" javaType="classify">-->
+<!--            <id property="lid" column="lid" />-->
+<!--            <result property="labelName" column="labelName" />-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+    <select id="getBlogByID" resultMap="blogClassify">
+        select * from t_blog where bid = #{bid}
+    </select>
+
+    <select id="getBlogByVisited" resultType="blog">
+        select * from t_blog order by visited desc
+    </select>
+
+    <select id="getBlogSearch" resultMap="blogClassify">
+        select * from t_blog
+        <where>
+            <if test="lid!=0">
+                lid = #{lid}
+            </if>
+            <if test="recommend!=null">
+                and recommend = #{recommend}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBlogByLid" resultType="blog">
+        select * from t_blog where lid = #{lid}
+    </select>
+
+    <select id="getBlogAround" resultType="blog">
+        select * from t_blog
+        <where>
+            <choose>
+                <when test="condition=='before'">
+                    bid &gt; #{bid} and issue = "发布" limit 1
+                </when>
+                <otherwise>
+                    bid &lt; #{bid} and issue = "发布" order by bid desc limit 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <select id="getCountByClassify" resultType="map">
+        select lid,count(*) as classifyCount from t_blog where issue = '发布' group by lid
+    </select>
+
+    <select id="getBlogCount" resultType="int">
+        select count(*) from t_blog where issue = '发布'
+    </select>
+
+    <insert id="uploadBlog" parameterType="blog">
+        insert into t_blog (title, description, content, createDate, updateDate,author, img, recommend, lid, issue) values (#{blog.title},#{blog.description},#{blog.content},#{blog.createDate},#{blog.updateDate},#{blog.author},#{blog.img},#{blog.recommend},#{lid},#{blog.issue})
+    </insert>
+
+    <update id="upVisited" parameterType="int">
+        update t_blog set visited=visited+1 where bid = #{bid}
+    </update>
+
+    <update id="upBlog" parameterType="blog">
+        update t_blog set title=#{blog.title},description=#{blog.description},content=#{blog.content},updateDate=#{blog.updateDate},img=#{blog.img},recommend=#{blog.recommend},lid=#{lid},issue=#{blog.issue} where bid = #{blog.bid}
+    </update>
+
+    <delete id="delBlog" parameterType="int">
+        delete from t_blog where bid = #{bid}
+    </delete>
+
+</mapper>

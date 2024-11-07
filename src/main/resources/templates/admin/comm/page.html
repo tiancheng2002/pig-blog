@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <tr th:fragment="pagego">
+        <th colspan="10">
+            <span style="line-height: 40px">当前第[[${pageInfo.pageNum}]]页,共[[${pageInfo.pages}]]页，共[[${pageInfo.total}]]条记录</span>
+            <div class="ui pagination menu" style="height: 20px;float: right">
+                <form class="ui form" th:action="@{'/admin/'+${navbar}}" method="get">
+                    <div class="inline fields">
+                        <a class="item" th:if="${pageInfo.pageNum>1}" th:href="@{'/admin/'+${navbar}+'?pageNum='+${pageInfo.prePage}}">上一页</a>
+                        <a class="item" th:if="${pageInfo.pageNum<pageInfo.pages}" th:href="@{'/admin/'+${navbar}+'?pageNum='+${pageInfo.nextPage}}">下一页</a>
+                        <div class="field">
+                            <input type="text" name="pageNum" class="go_page" placeholder="跳转页数">
+                        </div>
+                        <div class="field">
+                            <button class="ui mini teal basic button"></i>跳转</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </th>
+    </tr>
+
+</body>
+</html>

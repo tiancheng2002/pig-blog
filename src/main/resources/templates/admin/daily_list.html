@@ -1,0 +1,119 @@
+<!doctype html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>日常管理</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.4/vue.js"></script>
+    <script src="//unpkg.com/element-ui@2.15.6/lib/index.js"></script>
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{admin/comm/header::header}"></div>
+
+<div id="app" class="container-fluid">
+    <div class="row">
+        <div th:replace="~{admin/comm/footer::footer}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="ui container">
+                <form th:action="@{/admin/daily/search_date}" method="post" class="ui segment form">
+                    <div class="inline fields">
+                        <div class="field">
+                            <div class="block">
+                                <el-date-picker style="padding-left: 10px" name="date"
+                                                v-model="value1"
+                                                type="date"
+                                                placeholder="选择日期">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
+                        </div>
+                        <a class="btn btn-primary" th:href="@{/admin/daily/upload/in}">发布日常</a>
+                    </div>
+                </form>
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>图片路径</th>
+                        <th>发布日期</th>
+                        <th>发布内容</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="daily:${daily}">
+                        <td th:text="${daily.did}"></td>
+                        <td th:text="${daily.dayImg}"></td>
+                        <td th:text="${#dates.format(daily.uploadDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${daily.text}"></td>
+                        <td>
+                            <a th:href="@{'/admin/daily/upload/'+${daily.did}}" class="ui mini teal button">编辑</a>
+                            <a href="javascript:void(0)" th:onclick="'del('+${daily.did}+')'"
+                               class="ui mini red button">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <div th:replace="~{admin/comm/page::pagego}"></div>
+                    </tfoot>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<style>
+    @import url("//unpkg.com/element-ui@2.15.6/lib/theme-chalk/index.css");
+</style>
+<!-- Icons -->
+<script th:src="@{https://unpkg.com/feather-icons/dist/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+<script>
+    var Main = {
+        data() {
+            return {
+                value1: '',
+            };
+        }
+    };
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+</script>
+<script>
+    function del(did) {
+        $.ajax({
+            url: "/admin/daily/del",
+            type: "POST",
+            data: {did: did},
+            success: function (data) {
+                if (data == 'ok') {
+                    alert("删除成功！")
+                    window.location.href = "/admin/daily/all"
+                } else {
+                    alert(data)
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

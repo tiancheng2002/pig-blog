@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhu.dao.DailyMapper">
+
+    <select id="getDailyByID" resultType="daily">
+        select * from t_daily
+        <where>
+            <if test="did!=null">
+                did = #{did}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDailyByDate" resultType="daily">
+        select * from t_daily
+        <where>
+            <if test="date!=null">
+                uploadDate like "%"#{date}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getDailyCount" resultType="int">
+        select count(*) from t_daily
+    </select>
+
+    <insert id="addDaily" parameterType="daily">
+        insert into t_daily (dayImg, uploadDate, text) values (#{dayImg},#{uploadDate},#{text})
+    </insert>
+
+    <update id="upDaily" parameterType="daily">
+        update t_daily set dayImg=#{dayImg},text=#{text} where did = #{did}
+    </update>
+
+    <delete id="delDaily" parameterType="int">
+        delete from t_daily where did = #{did}
+    </delete>
+
+</mapper>

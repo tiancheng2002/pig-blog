@@ -1,0 +1,95 @@
+<!doctype html>
+<!--suppress ALL-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>标签管理</title>
+    <link rel="shortcut icon" href="https://pic.imgdb.cn/item/61c3077b2ab3f51d91280376.png">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="https://cdn.bootcdn.net/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <script th:src="@{https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js}"></script>
+  </head>
+
+  <body>
+
+    <div th:replace="~{admin/comm/header::header}"></div>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <div th:replace="~{admin/comm/footer::footer}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="ui container">
+                <form th:action="@{/admin/classify/search}" method="post" class="ui segment form" style="width: 60%;margin: 0 auto;">
+                    <div class="inline fields">
+                        <div class="field">
+                            <input type="text" name="label" placeholder="标签名称">
+                        </div>
+                        <div class="field">
+                            <button class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
+                        </div>
+                        <a class="btn btn-primary" th:href="@{/admin/classify/in}">添加标签</a>
+                    </div>
+                </form>
+                <table class="ui celled table" style="width: 60%;margin: 0 auto;">
+                  <thead>
+                    <tr>
+                      <th>分类ID</th>
+                      <th>标签名称</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="classify:${classify}">
+                      <td th:text="${classify.lid}"></td>
+                      <td th:text="${classify.labelName}"></td>
+                      <td>
+                        <a th:href="@{'/admin/classify/'+${classify.lid}}" class="ui mini teal button">编辑</a>
+                        <a href="javascript:void(0)" th:onclick="'del('+${classify.lid}+')'" class="ui mini red button">删除</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <div th:replace="~{admin/comm/page::pagego}"></div>
+                  </tfoot>
+                </table>
+            </div>
+        </main>
+      </div>
+    </div>
+
+
+    <!-- Icons -->
+    <script th:src="@{https://unpkg.com/feather-icons/dist/feather.min.js}"></script>
+    <script>
+      feather.replace()
+    </script>
+    <script>
+      function del(lid) {
+        $.ajax({
+          url:'/admin/classify/del',
+          type:'POST',
+          data:{lid:lid},
+          success:function(result){
+            if(result=='ok'){
+              alert("删除标签成功！")
+              window.location.reload()
+            }else{
+              alert(result)
+            }
+          }
+        })
+      }
+    </script>
+
+  </body>
+</html>

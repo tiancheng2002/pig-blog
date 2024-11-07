@@ -1,0 +1,145 @@
+body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+#header_nav{
+  background-color: rgb(8, 157, 226);
+  height: 3rem;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  padding: 1rem 1rem;
+  height: 3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  display: block;
+  border-right: 3px solid #007bff;
+  color: #007bff;
+  background-color: rgb(223, 223, 223);
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+/*
+ * Utilities
+ */
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+#login{
+  padding: 5px 15px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+}
+
+.container-fluid td{
+  vertical-align: middle;
+}
+.go_page{
+  border: none;
+  outline: none;
+  margin: 0 1rem;
+}
+
+#blog_data,#comment_data,#daily_data,#visited_data{
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 120px;
+  border-radius: 5px;
+}
+.data-item{
+  color: white;
+  margin-right: 15px;
+  width: 100%;
+  text-align: right;
+}
+.data-item div:nth-child(2){
+  font-size: 28px;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.admin_reply_text{
+  margin-top: 1rem!important;
+  color: #a1a1a1!important;
+}
